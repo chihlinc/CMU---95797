@@ -11,17 +11,17 @@ renamed as (
         lpep_pickup_datetime,
         lpep_dropoff_datetime,
         {{flag_to_bool("store_and_fwd_flag")}} as store_and_fwd_flag,        
-ratecodeid,
+        ratecodeid,
         pulocationid,
         dolocationid,
-        passenger_count,
+        passenger_count::int as passenger_count,
         trip_distance,
         fare_amount,
         extra,
         mta_tax,
         tip_amount,
         tolls_amount,
-        ehail_fee,
+        --ehail_fee, --removed due to 100% null source data
         improvement_surcharge,
         total_amount,
         payment_type,
@@ -30,7 +30,8 @@ ratecodeid,
         filename
 
     from source
-
+      WHERE lpep_pickup_datetime < TIMESTAMP '2022-12-31' 
+        AND trip_distance >= 0 -- drop negative trip_distance
 )
 
 select * from renamed

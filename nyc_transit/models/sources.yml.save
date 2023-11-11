@@ -4,35 +4,35 @@ sources:
       - name: bike_data
         columns:
           - name: tripduration
-            data_type: CHARACTER VARYING(256)
+            data_type: BIGINT
           - name: starttime
-            data_type: CHARACTER VARYING(256)
+            data_type: TIMESTAMP
           - name: stoptime
-            data_type: CHARACTER VARYING(256)
+            data_type: TIMESTAMP
           - name: start station id
-            data_type: CHARACTER VARYING(256)
+            data_type: BIGINT
           - name: start station name
             data_type: CHARACTER VARYING(256)
           - name: start station latitude
-            data_type: CHARACTER VARYING(256)
+            data_type: DOUBLE
           - name: start station longitude
-            data_type: CHARACTER VARYING(256)
+            data_type: DOUBLE
           - name: end station id
-            data_type: CHARACTER VARYING(256)
+            data_type: BIGINT
           - name: end station name
             data_type: CHARACTER VARYING(256)
           - name: end station latitude
-            data_type: CHARACTER VARYING(256)
+            data_type: DOUBLE
           - name: end station longitude
-            data_type: CHARACTER VARYING(256)
+            data_type: DOUBLE
           - name: bikeid
-            data_type: CHARACTER VARYING(256)
+            data_type: BIGINT
           - name: usertype
             data_type: CHARACTER VARYING(256)
           - name: birth year
-            data_type: CHARACTER VARYING(256)
+            data_type: BIGINT
           - name: gender
-            data_type: CHARACTER VARYING(256)
+            data_type: BIGINT
           - name: ride_id
             data_type: CHARACTER VARYING(256)
           - name: rideable_type
@@ -69,19 +69,19 @@ sources:
           - name: name
             data_type: CHARACTER VARYING(256)
           - name: date
-            data_type: CHARACTER VARYING(256)
+            data_type: DATE
           - name: awnd
-            data_type: CHARACTER VARYING(256)
+            data_type: DOUBLE
           - name: prcp
-            data_type: CHARACTER VARYING(256)
+            data_type: DOUBLE
           - name: snow
-            data_type: CHARACTER VARYING(256)
+            data_type: DOUBLE
           - name: snwd
-            data_type: CHARACTER VARYING(256)
+            data_type: DOUBLE
           - name: tmax
-            data_type: CHARACTER VARYING(256)
+            data_type: BIGINT
           - name: tmin
-            data_type: CHARACTER VARYING(256)
+            data_type: BIGINT
           - name: filename
             data_type: CHARACTER VARYING(256)
 
@@ -102,6 +102,18 @@ sources:
         columns:
           - name: dispatching_base_num
             data_type: CHARACTER VARYING(256)
+	    tests:
+  	    - not_null
+  	    - dbt_expectations.expect_column_to_exist
+  	    - relationships:
+tests:
+  - not_null
+  - dbt_expectations.expect_column_to_exist
+  - relationships:
+      to: source('main', 'fhv_bases')
+      field: base_number      		to: 
+source('main', 'fhv_bases')
+      		field: base_number
           - name: pickup_datetime
             data_type: TIMESTAMP
           - name: dropoff_datetime
@@ -163,6 +175,11 @@ sources:
             data_type: CHARACTER VARYING(256)
           - name: access_a_ride_flag
             data_type: CHARACTER VARYING(256)
+	    tests:
+	      - accepted_values:
+		   values: ['Y', 'N']
+		   config: 
+		      severity: warn
           - name: wav_request_flag
             data_type: CHARACTER VARYING(256)
           - name: wav_match_flag
