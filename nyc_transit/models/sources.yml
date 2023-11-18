@@ -5,164 +5,282 @@ sources:
         columns:
           - name: tripduration
             data_type: CHARACTER VARYING(256)
+            description: "Duration of the bike trip"
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: starttime
             data_type: CHARACTER VARYING(256)
+            description: "Start time of the bike trip"
           - name: stoptime
             data_type: CHARACTER VARYING(256)
-          - name: start station id
+            description: "Stop time of the bike trip"
+          - name: station_id
             data_type: CHARACTER VARYING(256)
+            description: "ID of the starting bike station"
+        
           - name: start station name
             data_type: CHARACTER VARYING(256)
+            description: "Name of the starting bike station"
           - name: start station latitude
             data_type: CHARACTER VARYING(256)
+            description: "Latitude of the starting bike station"
           - name: start station longitude
             data_type: CHARACTER VARYING(256)
+            description: "Longitude of the starting bike station"
           - name: end station id
             data_type: CHARACTER VARYING(256)
+            description: "ID of the ending bike station"
           - name: end station name
             data_type: CHARACTER VARYING(256)
+            description: "Name of the ending bike station"
           - name: end station latitude
             data_type: CHARACTER VARYING(256)
+            description: "Latitude of the ending bike station"
           - name: end station longitude
             data_type: CHARACTER VARYING(256)
+            description: "Longitude of the ending bike station"
           - name: bikeid
             data_type: CHARACTER VARYING(256)
+            description: "ID of the bike"
           - name: usertype
             data_type: CHARACTER VARYING(256)
+            description: "Type of user"
+      
           - name: birth year
             data_type: CHARACTER VARYING(256)
+            description: "Birth year of the user"
           - name: gender
             data_type: CHARACTER VARYING(256)
+            description: "Gender of the user"
           - name: ride_id
             data_type: CHARACTER VARYING(256)
+            description: "Id of ride"
           - name: rideable_type
             data_type: CHARACTER VARYING(256)
+            description:  "Type of rideable"
           - name: started_at
             data_type: CHARACTER VARYING(256)
+            description: "Start time of the ride"
           - name: ended_at
             data_type: CHARACTER VARYING(256)
+            description: "End time of the ride"
           - name: start_station_name
             data_type: CHARACTER VARYING(256)
+            description: "Name of the starting bike station"
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: start_station_id
             data_type: CHARACTER VARYING(256)
+            description: "ID of the starting bike station"
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: end_station_name
             data_type: CHARACTER VARYING(256)
+            description: "Name of the ending bike station"
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: end_station_id
             data_type: CHARACTER VARYING(256)
+            description: "ID of the ending bike station"
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: start_lat
             data_type: CHARACTER VARYING(256)
+            description: "Latitude of the starting bike station"
           - name: start_lng
             data_type: CHARACTER VARYING(256)
+            description: "Longitude of the starting bike station"
           - name: end_lat
             data_type: CHARACTER VARYING(256)
+            description: "Latitude of the ending bike station"
           - name: end_lng
             data_type: CHARACTER VARYING(256)
+            description: "Longitude of the ending bike station"
           - name: member_casual
             data_type: CHARACTER VARYING(256)
+            description: "Indicates whether the user is a member or casual"
           - name: filename
             data_type: CHARACTER VARYING(256)
+            description: "Name of the file"
 
       - name: central_park_weather
         columns:
           - name: station
             data_type: CHARACTER VARYING(256)
+            description: "name of station"
           - name: name
             data_type: CHARACTER VARYING(256)
+            description: "Date of weather observation."
           - name: date
             data_type: CHARACTER VARYING(256)
+            description: "Date"
           - name: awnd
             data_type: CHARACTER VARYING(256)
+            description: "Average wind speed"
           - name: prcp
             data_type: CHARACTER VARYING(256)
+            description: "Precipitation."
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: snow
             data_type: CHARACTER VARYING(256)
+            description: "snow"
           - name: snwd
             data_type: CHARACTER VARYING(256)
+            description: "snow depth"
           - name: tmax
             data_type: CHARACTER VARYING(256)
+            description: "Maximum temperature."
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: tmin
             data_type: CHARACTER VARYING(256)
+            description: "Min temp"
           - name: filename
             data_type: CHARACTER VARYING(256)
+            description: "File name"
 
       - name: fhv_bases
         columns:
           - name: base_number
             data_type: CHARACTER VARYING(256)
+            description: "Base number."
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: base_name
             data_type: CHARACTER VARYING(256)
+            description: "Base name."
           - name: dba
             data_type: CHARACTER VARYING(256)
           - name: dba_category
             data_type: CHARACTER VARYING(256)
+            description: "Doing Business As category."
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: filename
             data_type: CHARACTER VARYING(256)
+            description: "File name."
 
       - name: fhv_tripdata
         columns:
           - name: dispatching_base_num
             data_type: CHARACTER VARYING(256)
+            description: "Dispatching base number."
+            tests:
+              - not_null
+              - dbt_expectations.expect_column_to_exist
+              - relationships:
+                  to: source('main','fhv_bases')
+                  field: base_number 
+                  config:
+                    severity: warn
           - name: pickup_datetime
+           
             data_type: TIMESTAMP
+            description: "Date and time of trip pickup."
           - name: dropoff_datetime
             data_type: TIMESTAMP
+            description: "The date and time of the trip drop-off"
+             
           - name: pulocationid
             data_type: DOUBLE
+            description: "Pickup location ID."
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: dolocationid
             data_type: DOUBLE
+            description: "Drop-off location ID."
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: sr_flag
             data_type: INTEGER
+            description: "Service request flag."
           - name: affiliated_base_number
             data_type: CHARACTER VARYING(256)
+            description: "Affiliated base number."
           - name: filename
             data_type: CHARACTER VARYING(256)
+            description: "File name"
 
       - name: fhvhv_tripdata
         columns:
           - name: hvfhs_license_num
             data_type: CHARACTER VARYING(256)
+            description: "License number for high volume for hire service."
           - name: dispatching_base_num
             data_type: CHARACTER VARYING(256)
+            description: "Dispatching base number."
+
           - name: originating_base_num
             data_type: CHARACTER VARYING(256)
+            description: "Originating base number."
           - name: request_datetime
             data_type: TIMESTAMP
+            description: "Date and time of trip request."
           - name: on_scene_datetime
             data_type: TIMESTAMP
+            description: "Date and time of being on the scene."
           - name: pickup_datetime
             data_type: TIMESTAMP
+            description: "Date and time of trip pickup."
+            
           - name: dropoff_datetime
             data_type: TIMESTAMP
+            description: "Date and time of trip drop-off."
           - name: pulocationid
             data_type: BIGINT
+            description: "Pickup location ID."
           - name: dolocationid
             data_type: BIGINT
+            description: "Drop-off location ID."
           - name: trip_miles
+            description: "total miles for passenger trip"
             data_type: DOUBLE
+            description: "Total miles for passenger trip."
+            
           - name: trip_time
             data_type: BIGINT
+            description: "Trip time duration."
           - name: base_passenger_fare
             data_type: DOUBLE
+            description: "Base passenger fare."
           - name: tolls
             data_type: DOUBLE
+            description: "Tolls."
           - name: bcf
             data_type: DOUBLE
+            description: "Base company fee"
           - name: sales_tax
             data_type: DOUBLE
+            description: "Sales tax"
           - name: congestion_surcharge
             data_type: DOUBLE
+            description: "Congestion surcharge."
           - name: airport_fee
             data_type: DOUBLE
+            description: "Airport fee"
           - name: tips
             data_type: DOUBLE
+            description: "Tips"
+            
           - name: driver_pay
             data_type: DOUBLE
+            description: "Driver pay."
           - name: shared_request_flag
             data_type: CHARACTER VARYING(256)
+            description: "Shared request flag."
           - name: shared_match_flag
             data_type: CHARACTER VARYING(256)
+            description: "Shared match flag."
           - name: access_a_ride_flag
             data_type: CHARACTER VARYING(256)
+            description: "Access-a-Ride flag." 
+            tests:
+              - accepted_values:
+                  values: ['Y', 'N']
+                  config:
+                    severity: warn
+                  
           - name: wav_request_flag
             data_type: CHARACTER VARYING(256)
           - name: wav_match_flag
@@ -174,53 +292,84 @@ sources:
         columns:
           - name: vendorid
             data_type: BIGINT
+            description: "Identification number for the vendor or taxi company."
           - name: lpep_pickup_datetime
             data_type: TIMESTAMP
+            description: "Date and time when the taxi ride started."
           - name: lpep_dropoff_datetime
             data_type: TIMESTAMP
+            description: "Date and time when the taxi ride ended."
           - name: store_and_fwd_flag
             data_type: CHARACTER VARYING(256)
+            description: "Flag indicating whether the trip record was stored and forwarded."
           - name: ratecodeid
             data_type: DOUBLE
+            description: "Code indicating the type of rate used for the trip."
           - name: pulocationid
             data_type: BIGINT
+            description: "Location ID where the taxi ride started."
           - name: dolocationid
             data_type: BIGINT
+            description: "Location ID where the taxi ride ended."
           - name: passenger_count
             data_type: DOUBLE
+            description: "Number of passengers in the taxi."
           - name: trip_distance
             data_type: DOUBLE
+            description: "Distance of the taxi ride in miles."
+
           - name: fare_amount
             data_type: DOUBLE
+            description: "Base fare for the taxi ride."
           - name: extra
             data_type: DOUBLE
+            description: "Extra charges (e.g., surcharges, tolls) for the taxi ride."
           - name: mta_tax
             data_type: DOUBLE
+            description: "Metropolitan Taxicab Authority tax."
           - name: tip_amount
             data_type: DOUBLE
+            description: "Tip amount for the taxi ride."
+            tests:
+              - dbt_expectations.expect_column_median_to_be_between:
+                  min_value: 0
+                  max_value: 200 
+
           - name: tolls_amount
             data_type: DOUBLE
+            description: "Toll amount for the taxi ride."
           - name: ehail_fee
             data_type: INTEGER
+            description: "Fee for e-hail (electronic hailing) services."
           - name: improvement_surcharge
             data_type: DOUBLE
+            description: "Surcharge for improvements to taxi transportation."
           - name: total_amount
             data_type: DOUBLE
+            description: "Total fare amount for the taxi ride."
           - name: payment_type
             data_type: DOUBLE
+            description: "Type of payment used for the taxi ride"
           - name: trip_type
             data_type: DOUBLE
+            description: "Type of trip such as street hail"
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: congestion_surcharge
             data_type: DOUBLE
+            description: "Surcharge for congestion pricing."
           - name: filename
             data_type: CHARACTER VARYING(256)
+            description: "File name"
 
       - name: yellow_tripdata
         columns:
           - name: vendorid
             data_type: BIGINT
+            description: "similar to green. "
           - name: tpep_pickup_datetime
             data_type: TIMESTAMP
+            description: "Date and time when the taxi ride started."
           - name: tpep_dropoff_datetime
             data_type: TIMESTAMP
           - name: passenger_count
@@ -255,5 +404,7 @@ sources:
             data_type: DOUBLE
           - name: airport_fee
             data_type: DOUBLE
+            tests:
+              - dbt_expectations.expect_column_to_exist
           - name: filename
             data_type: CHARACTER VARYING(256)

@@ -1,0 +1,401 @@
+models:
+  - name: stg__fhv_bases
+    description: "Staging table for FHV bases information."
+    columns:
+
+      - name: base_number
+        description: "Unique identifier for the base."
+
+      - name: base_name
+        description: "Name of the FHV base."
+
+      - name: dba
+        description: "Doing Business As information."
+
+      - name: dba_category
+        description: "Category of Doing Business As."
+
+      - name: filename
+        description: "Name of the file from which the data is sourced."
+
+
+  - name: stg__bike_data
+    description: "Staging table for bike information."
+    columns:
+      - name: started_at_ts
+        description: "Timestamp when the bike trip started."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: timestamp
+
+      - name: ended_at_ts
+        description: "Timestamp when the bike trip ended."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: timestamp
+
+      - name: tripduration
+        description: "Duration of the bike trip."
+
+      - name: main_bike_data_station_id
+        description: "ID of the main bike data station."
+
+      - name: start_station_name
+        description: "Name of the starting bike station."
+
+      - name: start_lat
+        description: "Latitude of the starting location."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: double
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: -100.0
+              max_value: 100.0
+
+      - name: start_lng
+        description: "Longitude of the starting location."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: double
+          - dbt_expectations.expect_column_values_to_be_between:
+              min_value: -200.0
+              max_value: 200.0
+
+      - name: end_station_id
+        description: "ID of the ending bike station."
+
+      - name: end_station_name
+        description: "Name of the ending bike station."
+
+      - name: end_lat
+        description: "Latitude of the ending location."
+
+      - name: end_lng
+        description: "Longitude of the ending location."
+        
+
+      - name: filename
+        description: "Name of the file from which the data is sourced."
+
+  - name: stg__yellow_tripdata
+    description: "Staging table for yellow taxi trip data."
+    columns:
+      - name: vendorid
+        description: "ID of the taxi vendor."
+
+      - name: tpep_pickup_datetime
+        description: "Pickup datetime in the format 'YYYY-MM-DD HH:MI:SS'."
+
+      - name: tpep_dropoff_datetime
+        description: "Dropoff datetime in the format 'YYYY-MM-DD HH:MI:SS'."
+
+      - name: passenger_count
+        description: "Number of passengers in the taxi."
+
+      - name: trip_distance
+        description: "Distance covered during the trip."
+
+      - name: ratecodeid
+        description: "Rate code ID for the trip."
+
+      - name: store_and_fwd_flag
+        description: "Flag indicating whether the trip data was stored and forwarded."
+        tests:
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: boolean
+
+      - name: pulocationid
+        description: "ID of the pickup location."
+
+      - name: dolocationid
+        description: "ID of the dropoff location."
+
+      - name: payment_type
+        description: "Payment type for the trip."
+
+      - name: fare_amount
+        description: "Fare amount for the trip."
+
+      - name: extra
+        description: "Extra charges for the trip."
+
+      - name: mta_tax
+        description: "MTA tax for the trip."
+
+      - name: tip_amount
+        description: "Tip amount for the trip."
+
+      - name: tolls_amount
+        description: "Tolls amount for the trip."
+
+      - name: improvement_surcharge
+        description: "Improvement surcharge for the trip."
+
+      - name: total_amount
+        description: "Total amount for the trip."
+
+      - name: congestion_surcharge
+        description: "Congestion surcharge for the trip."
+
+      - name: airport_fee
+        description: "Airport fee for the trip."
+
+      - name: filename
+        description: "Name of the file from which the data is sourced."
+
+  - name: stg__central_park_weather
+    description: "Staging table for weather data in Central Park."
+    columns:
+      - name: station
+        description: "ID of the weather station."
+
+      - name: name
+        description: "Name of the weather station."
+
+      - name: date
+        description: "Date of the weather observation."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: date
+
+      - name: awnd
+        description: "Average wind speed for the day."
+     
+
+      - name: prcp
+        description: "Total precipitation for the day."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: double
+
+      - name: snow
+        description: "Total snowfall for the day."      
+
+      - name: snwd
+        description: "Snow depth."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: double
+
+      - name: tmax
+        description: "Maximum temperature for the day."
+        
+
+      - name: tmin
+        description: "Minimum temperature for the day."
+       
+
+      - name: filename
+        description: "Name of the file from which the weather data is sourced."
+
+  - name: stg__fhv_tripdata
+    description: "Staging table for FHV (For-Hire Vehicle) trip data."
+    columns:
+      - name: dispatching_base_num
+        description: "Number associated with the dispatching base."
+        tests:
+        - relationships:
+            to: ref('staging','stg__fhv_bases')
+            field: base_number
+
+      - name: pickup_datetime
+        description: "Datetime when the trip started."
+
+      - name: dropoff_datetime
+        description: "Datetime when the trip ended."
+
+      - name: pulocationid
+        description: "ID of the pickup location."
+
+      - name: dolocationid
+        description: "ID of the drop-off location."
+
+      - name: affiliated_base_number
+        description: "Number associated with the affiliated base."
+
+      - name: filename
+        description: "Name of the file containing the data."
+
+  - name: stg__fhvhv_tripdata
+    description: "Staging table for FHVHV (For-Hire Vehicle High Volume) trip data."
+    columns:
+      - name: hvfhs_license_num
+        description: "License number associated with FHVHS."
+
+      - name: dispatching_base_num
+        description: "Number associated with the dispatching base."
+
+      - name: originating_base_num
+        description: "Number associated with the originating base."
+
+      - name: request_datetime
+        description: "Datetime when the request was made."
+
+      - name: on_scene_datetime
+        description: "Datetime when the vehicle arrived on the scene."
+
+      - name: pickup_datetime
+        description: "Datetime when the trip started."
+
+      - name: dropoff_datetime
+        description: "Datetime when the trip ended."
+
+      - name: pulocationid
+        description: "ID of the pickup location."
+
+      - name: dolocationid
+        description: "ID of the drop-off location."
+
+      - name: trip_miles
+        description: "Miles covered during the trip."
+
+      - name: trip_time
+        description: "Duration of the trip in seconds."
+
+      - name: base_passenger_fare
+        description: "Base passenger fare for the trip."
+
+      - name: tolls
+        description: "Tolls paid during the trip."
+
+      - name: bcf
+        description: "Base charge for the trip."
+
+      - name: sales_tax
+        description: "Sales tax applied to the trip."
+
+      - name: congestion_surcharge
+        description: "Congestion surcharge for the trip."
+
+      - name: airport_fee
+        description: "Fee related to airport services."
+
+      - name: tips
+        description: "Tips given during the trip."
+
+      - name: driver_pay
+        description: "Payment received by the driver."
+
+      - name: shared_request_flag
+        description: "Flag indicating if the trip was a shared request."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: boolean
+
+      - name: shared_match_flag
+        description: "Flag indicating if the trip was a shared match."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: boolean
+
+      - name: access_a_ride_flag
+        description: "Flag indicating if the trip was an Access-A-Ride request."
+        tests:
+          # - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: boolean
+       
+      - name: wav_request_flag
+        description: "Flag indicating if the trip was a WAV (Wheelchair Accessible Vehicle) request."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: boolean
+
+      - name: wav_match_flag
+        description: "Flag indicating if the trip was a WAV match."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: boolean
+
+      - name: filename
+        description: "Name of the file containing the data."
+
+  - name: stg__green_tripdata
+    description: "Staging table for green taxi trip data."
+    columns:
+      - name: vendorid
+        description: "ID of the taxi vendor."
+
+      - name: lpep_pickup_datetime
+        description: "Datetime when the trip started."
+
+      - name: lpep_dropoff_datetime
+        description: "Datetime when the trip ended."
+
+      - name: store_and_fwd_flag
+        description: "Flag indicating whether the trip data was stored and forwarded."
+        tests:
+          - dbt_expectations.expect_column_to_exist
+          - dbt_expectations.expect_column_values_to_be_of_type:
+              column_type: boolean
+
+      - name: ratecodeid
+        description: "Rate code for the trip."
+
+      - name: pulocationid
+        description: "ID of the pickup location."
+
+      - name: dolocationid
+        description: "ID of the drop-off location."
+
+      - name: passenger_count
+        description: "Number of passengers during the trip."
+
+      - name: trip_distance
+        description: "Distance covered during the trip."
+
+      - name: fare_amount
+        description: "Amount paid for the trip, excluding tips and tolls."
+
+      - name: extra
+        description: "Miscellaneous extras and surcharges."
+
+      - name: mta_tax
+        description: "MTA tax for the trip."
+
+      - name: tip_amount
+        description: "Tip amount for the trip."
+
+      - name: tolls_amount
+        description: "Amount of tolls paid during the trip."
+
+      - name: improvement_surcharge
+        description: "Improvement surcharge amount."
+
+      - name: total_amount
+        description: "Total amount paid for the trip, including all charges."
+
+      - name: payment_type
+        description: "Payment type used for the trip."
+
+      - name: trip_type
+        description: "Type of trip (e.g., street-hail, dispatch)."
+
+      - name: congestion_surcharge
+        description: "Congestion surcharge amount, if applicable."
+
+      - name: filename
+        description: "File name of the data source."
