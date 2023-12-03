@@ -5,107 +5,107 @@ models:
       - name: station_id
         description: "bike station id, primary key"
       
-          
+    
 
       - name: station_name
-        description: ""
+        description: "The name or label associated with the bike station."
 
       - name: station_lat
-        description: ""
+        description: "The latitude coordinate of the bike station's location."
 
       - name: station_lng
-        description: ""
+        description: "The longitude coordinate of the bike station's location."
 
   - name: mart__dim_locations
     description: "taxi locations, used to join with pulocationid and dolocationid,
       taken from dbt seed. Not tested as data is small enough to check visually, as should be the case with use of seeds"
     columns:
       - name: locationid
-        description: "primary key"
+        description: "primary key, Unique identifier for a location."
 
       - name: borough
-        description: ""
+        description: "The district of the location."
 
       - name: zone
-        description: ""
+        description: "The zone associated with the location."
 
       - name: service_zone
-        description: ""
+        description: "The service zone classification for the location."
 
   - name: mart__fact_all_bike_trips
     description: "bike trip data normalised with station data stripped out to dim"
     columns:
       - name: started_at_ts
-        description: ""
+        description: "Timestamp indicating the start time of a bike trip."
 
       - name: ended_at_ts
-        description: ""
+        description: "Timestamp indicating the end time of a bike trip."
 
       - name: duration_min
-        description: ""
+        description: "Timestamp indicating the end time of a bike trip."
 
       - name: duration_sec
-        description: ""
+        description: "Duration of the bike trip in minutes."
 
       - name: start_station_id
-        description: ""
+        description: "Identifier for the bike station where the trip started."
 
       - name: end_station_id
-        description: ""
+        description: "Identifier for the bike station where the trip ended."
 
   - name: mart__fact_all_taxi_trips
     description: "all taxi trip data for analysis"
     columns:
       - name: type
-        description: ""
+        description: "The type of taxi trip"
 
       - name: pickup_datetime
-        description: ""
+        description: "Timestamp indicating the pickup time of the taxi trip."
 
       - name: dropoff_datetime
-        description: ""
+        description: "dropoff time of the taxi trip."
 
       - name: duration_min
-        description: ""
+        description: "Duration of the taxi trip in minutes."
 
       - name: duration_sec
-        description: ""
+        description: "Duration of the taxi trip in seconds."
 
       - name: pulocationid
-        description: ""
+        description: "Pickup location identifier."
 
       - name: dolocationid
-        description: ""
+        description: "Dropoff location identifier."
 
   - name: mart__fact_all_trips_daily
     description: "all trips including bikes and taxis grouped by day, with averaged trip duration"
     columns:
       - name: type
-        description: ""
+        description: "The type of trip"
 
       - name: date
-        description: ""
+        description: "date on which the trips are aggregated."
 
       - name: trips
-        description: ""
+        description: "The total number of trips"
 
       - name: average_trip_duration_min
-        description: ""
+        description: "The average duration of trips with mins"
 
   - name: mart__fact_all_trips
     description: "all trips including bikes and taxis with duration"
     columns:
       - name: type
-        description: ""
+        description: "The type of trip"
 
       - name: started_at_ts
-        description: ""
+        description: "The start of trips"
 
       - name: ended_at_ts
-        description: ""
+        description: "The end of trips"
 
       - name: duration_min
-        description: ""
+        description: "Duration in mins"
 
       - name: duration_sec
-        description: ""
+        description: "Duration in seconds"
