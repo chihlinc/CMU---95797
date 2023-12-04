@@ -4,8 +4,6 @@ models:
     columns:
       - name: station_id
         description: "bike station id, primary key"
-      
-    
 
       - name: station_name
         description: "The name or label associated with the bike station."
@@ -109,3 +107,11 @@ models:
 
       - name: duration_sec
         description: "Duration in seconds"
+
+  - name: mart__fact_all_trips_daily
+    description: "number of trips grouped by pickup borough"
+    columns:
+      - name: trip_count
+        description: "total number of trips."
+      - name: borough
+        description: "The pickup borough for the aggregated trips."

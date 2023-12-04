@@ -1,0 +1,2 @@
+'trip_count_Queens','trip_count_Manhattan','trip_count_Brooklyn','trip_count_Bronx','trip_count_Staten Island','trip_count_Unknown','trip_count_EWR'
+'6595648','17046224','9368642','4855611','510684','916786','1972'

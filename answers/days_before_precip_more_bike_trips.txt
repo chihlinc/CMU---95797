@@ -1,0 +1,2 @@
+'avg_bike_trips_before_precip','avg_bike_trips_with_precip'
+6337.7313432835817863,5503.5820895522382656
