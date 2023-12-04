@@ -33,5 +33,5 @@ JOIN
 WINDOW
     w AS (ORDER BY w1.date)
 ORDER BY
-    w1.date;
-
+    w1.date
+LIMIT 100

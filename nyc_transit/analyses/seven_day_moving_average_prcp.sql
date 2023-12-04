@@ -17,5 +17,5 @@ JOIN
 GROUP BY
     w1.date, w1.precipitation
 ORDER BY
-    w1.date;
-
+    w1.date
+LIMIT 100
